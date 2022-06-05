@@ -956,9 +956,6 @@ See `imenu-create-index-function' for more information."
         (define-key vbnet-mode-map '(control meta /) 'vbnet-new-sub))))
 
 
-;; These abbrevs are valid only in a code context.
-(defvar vbnet-mode-abbrev-table nil)
-
 (defvar vbnet-mode-hook ())
 
 
@@ -1497,30 +1494,6 @@ fast enough.
            (font-lock-mode 1)))))
 
 
-;; KJW should add some odds and bobs here to cover "end if". One way
-;; could be to create the abbreviations by removing whitespace then we
-;; could put "end if", "end with" and so on in the keyword table
-;; Another idea would be to make it intelligent enough to substitute
-;; the correct end for the construct (with, select, if)
-;; Is this what the abbrev table hook entry is for?
-(defun vbnet-construct-keyword-abbrev-table ()
-  (if vbnet-mode-abbrev-table
-      nil
-    (let ((words vbnet-all-keywords)
-          (word nil)
-          (list nil))
-      (while words
-        (setq word (car words)
-              words (cdr words))
-        (setq list (cons (list (downcase word) word) list)))
-
-      (define-abbrev-table 'vbnet-mode-abbrev-table list))))
-
-
-;; Would like to do this at compile-time.
-(vbnet-construct-keyword-abbrev-table)
-
-
 (defun vbnet-in-code-context-p ()
   (if (fboundp 'buffer-syntactic-context) ; XEmacs function.
       (null (buffer-syntactic-context))
@@ -1535,18 +1508,10 @@ fast enough.
            (null (nth 4 list))))))      ; inside comment
 
 
-(defun vbnet-pre-abbrev-expand-hook ()
-  ;; Allow our abbrevs only in a code context.
-  (setq local-abbrev-table
-        (if (vbnet-in-code-context-p)
-            vbnet-mode-abbrev-table)))
-
-
 (defun vbnet-newline-and-indent (&optional count)
   "Insert a newline, updating indentation."
   (interactive)
   (save-excursion
-    (expand-abbrev)
     (vbnet-indent-line))
   (call-interactively 'newline-and-indent))
 
@@ -2335,7 +2300,7 @@ See also `vbnet-indent-region'."
 
 (defun vbnet-split-line ()
   "Split line at point, adding continuation character or continuing
-a comment. In Abbrev mode, any abbrev before point will be expanded.
+a comment.
 
 See also `vbnet-join-continued-lines'"
   (interactive)
@@ -3044,13 +3009,6 @@ Here's a summary of the key bindings:
   (set-syntax-table vbnet-mode-syntax-table)
 
   (add-hook 'local-write-file-hooks 'vbnet-untabify)
-
-  (setq local-abbrev-table vbnet-mode-abbrev-table)
-  (if vbnet-capitalize-keywords-p
-      (progn
-        (make-local-variable 'pre-abbrev-expand-hook)
-        (add-hook 'pre-abbrev-expand-hook 'vbnet-pre-abbrev-expand-hook)
-        (abbrev-mode 1)))
 
   (make-local-variable 'comment-start)
   (setq comment-start "' ")
