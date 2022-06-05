@@ -786,8 +786,8 @@ alist. Leaves point after the \"End Namespace\", if it exists."
                                                               (concat indent-level "  "))))
               ;; there may be multiple children; add them all
               (if child-menu
-                  (mapcar
-                   '(lambda (item)
+                  (mapc
+                   (lambda (item)
                       (push item submenu))
                    child-menu))
               (setq suppress-next t)))))
@@ -1255,9 +1255,7 @@ See `imenu-create-index-function' for more information."
          "\\([[:alpha:]_][[:alnum:]_.]+\\)" ;; constructor
          ))
 
-     `(constant   "\\(\\b\\(?:[1-9][0-9.]*\\|[0-9]\\)\\b\\|&H[0-9A-F]+\\)")
-
-     )))
+     `(constant   "\\(\\b\\(?:[1-9][0-9.]*\\|[0-9]\\)\\b\\|&H[0-9A-F]+\\)"))))
 
 
 
@@ -1328,8 +1326,7 @@ fast enough.
       "While" "Width" "With" "Workspace" "Workspaces" "Write" "Year"
       "NotInheritable" "Shared" "OrElse"
       "Overridable" "WithEvents" "Finally" "Imports" "Compare" "Handles"
-      "Of" "Module"
-      )))
+      "Of" "Module")))
 
 (defvar vbnet-namespace-face 'vbnet-namespace-face)
 (defface vbnet-namespace-face
@@ -2496,8 +2493,7 @@ Next $1
             Me._intValue = Me.DefaultIntValue
         End If
 
-" "Select Case(args(i) ..." nil)
-                   )))
+" "Select Case(args(i) ..." nil))))
 
             (setq vbnet--yasnippet-has-been-fixed t)
 
@@ -3070,10 +3066,7 @@ Here's a summary of the key bindings:
   (eval-after-load "flymake"
     '(progn
        (if vbnet-want-flymake-fixup
-           (vbnet-flymake-install))))
-
-
-  )
+           (vbnet-flymake-install)))))
 
 
 (provide 'vbnet-mode)
