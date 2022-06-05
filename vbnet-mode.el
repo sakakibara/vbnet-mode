@@ -2989,7 +2989,7 @@ ctrl-e."
 ;; ========================================================================
 ;; finally, the mode
 
-(defun vbnet-mode ()
+(define-derived-mode vbnet-mode prog-mode "VB.NET"
   "A mode for editing Microsoft Visual Basic .NET programs.
 This is version 1.5 of the mode.
 
@@ -3041,8 +3041,6 @@ Here's a summary of the key bindings:
   (interactive)
   (kill-all-local-variables)
   (use-local-map vbnet-mode-map)
-  (setq major-mode 'vbnet-mode)
-  (setq mode-name "VB.NET")
   (set-syntax-table vbnet-mode-syntax-table)
 
   (add-hook 'local-write-file-hooks 'vbnet-untabify)
