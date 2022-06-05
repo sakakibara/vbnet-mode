@@ -2512,7 +2512,7 @@ Next $1
             ;; Insert the snippets from above into the table if they
             ;; are not already defined.
             (mapcar
-             '(lambda (item)
+             (lambda (item)
                 (let* ((full-key (car item))
                        (existing-snip
                         (yas/snippet-table-fetch snippet-table full-key)))
