@@ -3002,6 +3002,8 @@ Here's a summary of the key bindings:
   (interactive)
   (kill-all-local-variables)
   (use-local-map vbnet-mode-map)
+  (setq major-mode 'vbnet-mode)
+  (setq mode-name "VB.NET")
   (set-syntax-table vbnet-mode-syntax-table)
 
   (add-hook 'local-write-file-hooks 'vbnet-untabify)
